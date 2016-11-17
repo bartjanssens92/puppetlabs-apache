@@ -42,6 +42,9 @@ class apache::version {
         $default = '2.2'
       }
     }
+    'Archlinux': {
+      $default = '2.4'
+    }
     default: {
       fail("Class['apache::version']: Unsupported osfamily: ${::osfamily}")
     }

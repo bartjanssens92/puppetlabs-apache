@@ -141,6 +141,9 @@ define apache::mpm (
         ensure => present,
       }
     }
+    'Archlinux': {
+      # so we don't fail
+    }
     default: {
       fail("Unsupported osfamily ${::osfamily}")
     }

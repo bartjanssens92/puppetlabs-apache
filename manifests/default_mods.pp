@@ -28,6 +28,10 @@ class apache::default_mods (
     'Suse': {
       ::apache::mod { 'log_config': }
     }
+    'Archlinux': {
+      ::apache::mod { 'unixd': }
+      ::apache::mod { 'log_config': }
+    }
     default: {}
   }
   case $::osfamily {
