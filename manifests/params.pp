@@ -564,8 +564,8 @@ class apache::params inherits ::apache::version {
     $httpd_dir        = '/etc/httpd'
     $server_root      = '/var/vhosts'
     $conf_dir         = $httpd_dir
-    $confd_dir        = "${httpd_dir}/extra"
-    $mod_dir          = "${httpd_dir}/extra"
+    $confd_dir        = "${httpd_dir}/conf/extra"
+    $mod_dir          = "${httpd_dir}/conf/extra"
     $mod_enable_dir   = undef
     $vhost_dir        = "${httpd_dir}/vhosts.d"
     $vhost_enable_dir = undef
