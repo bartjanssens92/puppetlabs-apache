@@ -108,6 +108,6 @@ describe 'apache::mod::alias', :type => :class do
       }
     end
     it { is_expected.to contain_apache__mod("alias") }
-    it { is_expected.to contain_file("alias.conf").with(:content => /Alias \/icons\/ "\/usr\/local\/www\/apache24\/icons\/"/) }
+    it { is_expected.to contain_file("alias.conf").with(:content => /Alias \/icons\/ "\/usr\/share\/httpd\/icons\/"/) }
   end
 end

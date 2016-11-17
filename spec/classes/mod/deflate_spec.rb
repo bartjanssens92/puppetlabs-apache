@@ -143,7 +143,7 @@ describe 'apache::mod::deflate', :type => :class do
 
       it { is_expected.to contain_file("deflate.conf").with({
         :ensure => 'file',
-        :path   => '/etc/apache2/modules.d/deflate.conf',
+        :path   => '/etc/httpd/conf/extra/deflate.conf',
       } ) }
     end
   end

@@ -123,7 +123,7 @@ describe 'apache::vhost', :type => :define do
       it { is_expected.to contain_class("apache::params") }
       it { is_expected.to contain_concat("25-rspec.example.com.conf").with(
         :ensure => 'present',
-        :path   => '/etc/apache2/vhosts.d/25-rspec.example.com.conf'
+        :path   => '/etc/httpd/vhosts.d/25-rspec.example.com.conf'
       ) }
     end
   end
