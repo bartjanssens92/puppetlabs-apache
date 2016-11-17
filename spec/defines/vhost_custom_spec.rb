@@ -95,5 +95,26 @@ describe 'apache::vhost::custom', :type => :define do
         :path    => '/etc/apache2/vhosts.d/25-rspec.example.com.conf',
       ) }
     end
+    context "on a Archlinux osfamily" do
+      let :facts do
+        {
+          :osfamily               => 'Archlinux',
+          :operatingsystem        => 'Archlinux',
+          :operatingsystemrelease => '4.8.8-1-ARCH',
+          :concat_basedir         => '/dne',
+          :id                     => 'root',
+          :kernel                 => 'Linux',
+          :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+          :is_pe                  => false,
+        }
+      end
+      let :params do default_params end
+      let :facts do default_facts end
+      it { is_expected.to contain_file("apache_rspec.example.com").with(
+        :ensure  => 'present',
+        :content => 'foobar',
+        :path    => '/etc/apache2/vhosts.d/25-rspec.example.com.conf',
+      ) }
+    end
   end
 end
