@@ -838,7 +838,7 @@ describe 'apache', :type => :class do
       'notify'  => 'Class[Apache::Service]',
       'require' => 'Package[httpd]'
     ) }
-    it { is_expected.to contain_file("/etc/httpd/extra").with(
+    it { is_expected.to contain_file("/etc/httpd/conf/extra").with(
       'ensure'  => 'directory',
       'recurse' => 'true',
       'purge'   => 'true',

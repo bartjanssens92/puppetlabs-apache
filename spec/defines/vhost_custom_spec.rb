@@ -113,7 +113,7 @@ describe 'apache::vhost::custom', :type => :define do
       it { is_expected.to contain_file("apache_rspec.example.com").with(
         :ensure  => 'present',
         :content => 'foobar',
-        :path    => '/etc/apache2/vhosts.d/25-rspec.example.com.conf',
+        :path    => '/etc/httpd/vhosts.d/25-rspec.example.com.conf',
       ) }
     end
   end
