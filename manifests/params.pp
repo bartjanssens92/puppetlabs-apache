@@ -559,6 +559,58 @@ class apache::params inherits ::apache::version {
     $passenger_default_ruby       = '/usr/bin/ruby'
     $wsgi_socket_prefix           = undef
 
+  } elsif $::osfamily == 'Archlinux' {
+    $user             = 'http'
+    $group            = 'http'
+    $root_group       = 'wheel'
+    $apache_name      = 'apache'
+    $service_name     = 'httpd'
+    $httpd_dir        = '/etc/httpd'
+    $server_root      = '/var/vhosts'
+    $conf_dir         = $httpd_dir
+    $confd_dir        = "${httpd_dir}/extra"
+    $mod_dir          = "${httpd_dir}/extra"
+    $mod_enable_dir   = undef
+    $vhost_dir        = "${httpd_dir}/vhosts.d"
+    $vhost_enable_dir = undef
+    $conf_file        = 'conf/httpd.conf'
+    $ports_file       = "${confd_dir}/ports.conf"
+    $logroot          = '/var/log/httpd'
+    $logroot_mode     = undef
+    $lib_path         = '/etc/httpd/modules'
+    $mpm_module       = 'prefork'
+    $dev_packages     = undef
+    $default_ssl_cert = '/etc/ssl/httpd/server.crt'
+    $default_ssl_key  = '/etc/ssl/httpd/server.key'
+    $ssl_certs_dir    = '/etc/ssl/httpd'
+    $passenger_root   = '/usr'
+    $passenger_ruby   = '/usr/bin/ruby'
+    $passenger_conf_file = 'passenger.conf'
+    $passenger_conf_package_file = undef
+    $passenger_default_ruby = undef
+    $suphp_addhandler = 'x-httpd-php'
+    $suphp_engine     = 'off'
+    $suphp_configpath = '/etc/php'
+    $php_version      = 'latest'
+    $mod_packages     = {
+    }
+    $mod_libs         = {
+    }
+    $conf_template        = 'apache/httpd.conf.erb'
+    $keepalive            = 'Off'
+    $keepalive_timeout    = 15
+    $max_keepalive_requests = 100
+    $fastcgi_lib_path     = undef # TODO: revisit
+    $mime_support_package = undef # /etc/httpd/conf/mime.types is owned by apache 2.4.23-1
+    $mime_types_config    = '/etc/httpd/conf/mime.types'
+    $wsgi_socket_prefix   = undef
+    $docroot              = '/var/www/localhost/htdocs'
+    $alias_icons_path     = '/usr/share/httpd/icons'
+    $error_documents_path = '/usr/share/httpd/error'
+    $pidfile              = '/var/run/httpd/httpd.pid'
+    $error_log            = 'error.log'
+    $scriptalias          = '/var/www/localhost/cgi-bin'
+    $access_log_file      = 'access.log'
   } else {
     fail("Class['apache::params']: Unsupported osfamily: ${::osfamily}")
   }
