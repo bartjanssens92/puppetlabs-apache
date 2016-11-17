@@ -123,5 +123,28 @@ describe 'apache::mod::deflate', :type => :class do
         :path   => '/etc/apache2/modules.d/deflate.conf',
       } ) }
     end
+
+    context "on a Archlinux osfamily" do
+      let :facts do
+        {
+           :osfamily               => 'Archlinux',
+           :operatingsystem        => 'Archlinux',
+           :operatingsystemrelease => '4.8.8-1-ARCH',
+           :concat_basedir         => '/dne',
+           :id                     => 'root',
+           :kernel                 => 'Linux',
+           :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+           :is_pe                  => false,
+         }
+      end
+
+      # Load the more generic tests for this context
+      general_deflate_specs()
+
+      it { is_expected.to contain_file("deflate.conf").with({
+        :ensure => 'file',
+        :path   => '/etc/apache2/modules.d/deflate.conf',
+      } ) }
+    end
   end
 end

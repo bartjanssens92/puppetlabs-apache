@@ -133,5 +133,37 @@ describe 'apache::mod::dir', :type => :class do
         it { is_expected.to contain_file('dir.conf').with_content(/ fearsome\.aspx$/) }
       end
     end
+    context "on a Archlinux osfamily" do
+      let :facts do
+        {
+           :osfamily               => 'Archlinux',
+           :operatingsystem        => 'Archlinux',
+           :operatingsystemrelease => '4.8.8-1-ARCH',
+           :concat_basedir         => '/dne',
+           :id                     => 'root',
+           :kernel                 => 'Linux',
+           :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+           :is_pe                  => false,
+         }
+      end
+      context "passing no parameters" do
+        it { is_expected.to contain_class("apache::params") }
+        it { is_expected.to contain_apache__mod('dir') }
+        it { is_expected.to contain_file('dir.conf').with_content(/^DirectoryIndex /) }
+        it { is_expected.to contain_file('dir.conf').with_content(/ index\.html /) }
+        it { is_expected.to contain_file('dir.conf').with_content(/ index\.html\.var /) }
+        it { is_expected.to contain_file('dir.conf').with_content(/ index\.cgi /) }
+        it { is_expected.to contain_file('dir.conf').with_content(/ index\.pl /) }
+        it { is_expected.to contain_file('dir.conf').with_content(/ index\.php /) }
+        it { is_expected.to contain_file('dir.conf').with_content(/ index\.xhtml$/) }
+      end
+      context "passing indexes => ['example.txt','fearsome.aspx']" do
+        let :params do
+          {:indexes => ['example.txt','fearsome.aspx']}
+        end
+        it { is_expected.to contain_file('dir.conf').with_content(/ example\.txt /) }
+        it { is_expected.to contain_file('dir.conf').with_content(/ fearsome\.aspx$/) }
+      end
+    end
   end
 end
