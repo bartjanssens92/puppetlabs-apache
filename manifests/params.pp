@@ -562,7 +562,7 @@ class apache::params inherits ::apache::version {
     $apache_name      = 'apache'
     $service_name     = 'httpd'
     $httpd_dir        = '/etc/httpd'
-    $server_root      = '/var/vhosts'
+    $server_root      = '/etc/httpd'
     $conf_dir         = $httpd_dir
     $confd_dir        = "${httpd_dir}/conf/extra"
     $mod_dir          = "${httpd_dir}/conf/extra"
@@ -589,6 +589,9 @@ class apache::params inherits ::apache::version {
     $suphp_configpath = '/etc/php'
     $php_version      = 'latest'
     $mod_packages     = {
+            'fastcgi' => 'mod_fastcgi',
+            'fcgid'   => 'mod_fcgid',
+            'xml2enc' => 'libxml2', # is an optional dependency in arch
     }
     $mod_libs         = {
     }
@@ -600,7 +603,7 @@ class apache::params inherits ::apache::version {
     $mime_support_package = undef # /etc/httpd/conf/mime.types is owned by apache 2.4.23-1
     $mime_types_config    = '/etc/httpd/conf/mime.types'
     $wsgi_socket_prefix   = undef
-    $docroot              = '/var/www/localhost/htdocs'
+    $docroot              = '/srv/http/vhosts'
     $alias_icons_path     = '/usr/share/httpd/icons'
     $error_documents_path = '/usr/share/httpd/error'
     $pidfile              = '/var/run/httpd/httpd.pid'

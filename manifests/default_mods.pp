@@ -31,6 +31,7 @@ class apache::default_mods (
     'Archlinux': {
       ::apache::mod { 'unixd': }
       ::apache::mod { 'log_config': }
+      ::apache::mod { 'actions': }
     }
     default: {}
   }

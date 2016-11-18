@@ -125,4 +125,21 @@ describe 'apache::mod::proxy_html', :type => :class do
     it { is_expected.to contain_apache__mod('xml2enc').with(:loadfiles => nil) }
     it { is_expected.to contain_package("www-apache/mod_proxy_html") }
   end
+  context "on a Archlinux osfamily" do
+    let :facts do
+      {
+         :osfamily               => 'Archlinux',
+         :operatingsystem        => 'Archlinux',
+         :operatingsystemrelease => '4.8.8-1-ARCH',
+         :concat_basedir         => '/dne',
+         :id                     => 'root',
+         :kernel                 => 'Linux',
+         :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+         :is_pe                  => false,
+       }
+    end
+    it { is_expected.to contain_class("apache::params") }
+    it { is_expected.to contain_apache__mod('proxy_html').with(:loadfiles => nil) }
+    it { is_expected.to contain_apache__mod('xml2enc').with(:loadfiles => nil) }
+  end
 end

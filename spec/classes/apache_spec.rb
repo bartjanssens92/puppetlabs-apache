@@ -827,7 +827,7 @@ describe 'apache', :type => :class do
     it { is_expected.to contain_user("http") }
     it { is_expected.to contain_group("http") }
     it { is_expected.to contain_class("apache::service") }
-    it { is_expected.to contain_file("/var/www/localhost/htdocs").with(
+    it { is_expected.to contain_file("/srv/http/vhosts").with(
       'ensure'  => 'directory'
       )
     }
