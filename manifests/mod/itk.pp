@@ -85,6 +85,11 @@ class apache::mod::itk (
         content => 'itk',
       }
     }
+    'Archlinux': {
+      package { 'mod_itk':
+        ensure => present,
+      }
+    }
     default: {
       fail("Unsupported osfamily ${::osfamily}")
     }

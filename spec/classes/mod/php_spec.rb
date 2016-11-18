@@ -218,6 +218,72 @@ describe 'apache::mod::php', :type => :class do
       it { is_expected.to contain_file('php5.load') }
     end
   end
+  describe "on a Gentoo OS" do
+    let :facts do
+      {
+        :osfamily               => 'Gentoo',
+        :operatingsystem        => 'Gentoo',
+        :operatingsystemrelease => '3.16.1-gentoo',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin',
+        :is_pe                  => false,
+      }
+    end
+    context "with mpm_module => prefork" do
+      let :pre_condition do
+        'class { "apache": mpm_module => prefork, }'
+      end
+      it { is_expected.to contain_class('apache::params') }
+      it { is_expected.to contain_apache__mod('php5') }
+      it { is_expected.to contain_package("dev-lang/php") }
+      it { is_expected.to contain_file('php5.load') }
+    end
+    context "with mpm_module => itk" do
+      let :pre_condition do
+        'class { "apache": mpm_module => itk, }'
+      end
+      it { is_expected.to contain_class('apache::params') }
+      it { is_expected.to contain_class('apache::mod::itk') }
+      it { is_expected.to contain_apache__mod('php5') }
+      it { is_expected.to contain_package("dev-lang/php") }
+      it { is_expected.to contain_file('php5.load') }
+    end
+  end
+  describe "on a Archlinux osfamily" do
+    let :facts do
+      {
+        :osfamily               => 'Archlinux',
+        :operatingsystem        => 'Archlinux',
+        :operatingsystemrelease => '4.8.8-1-ARCH',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+        :is_pe                  => false,
+      }
+    end
+    context "with mpm_module => prefork" do
+      let :pre_condition do
+        'class { "apache": mpm_module => prefork, }'
+      end
+      it { is_expected.to contain_class('apache::params') }
+      it { is_expected.to contain_apache__mod('php7') }
+      it { is_expected.to contain_package("php-apache") }
+      it { is_expected.to contain_file('php7.load') }
+    end
+    context "with mpm_module => itk" do
+      let :pre_condition do
+        'class { "apache": mpm_module => itk, }'
+      end
+      it { is_expected.to contain_class('apache::params') }
+      it { is_expected.to contain_class('apache::mod::itk') }
+      it { is_expected.to contain_apache__mod('php7') }
+      it { is_expected.to contain_package("php-apache") }
+      it { is_expected.to contain_file('php7.load') }
+    end
+  end
   describe "OS independent tests" do
     let :facts do
       {
