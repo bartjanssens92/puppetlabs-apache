@@ -93,25 +93,25 @@ describe 'apache::fastcgi::server', :type => :define do
         :path   => "/etc/apache2/conf.d/fastcgi-pool-#{title}.conf"
       ) }
     end
-  context "on a Archlinux osfamily" do
-    let :facts do
-      {
-        :osfamily               => 'Archlinux',
-        :operatingsystem        => 'Archlinux',
-        :operatingsystemrelease => '4.8.8-1-ARCH',
-        :concat_basedir         => '/dne',
-        :id                     => 'root',
-        :kernel                 => 'Linux',
-        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
-        :is_pe                  => false,
-      }
-    end
+    context "on a Archlinux osfamily" do
+      let :default_facts do
+        {
+          :osfamily               => 'Archlinux',
+          :operatingsystem        => 'Archlinux',
+          :operatingsystemrelease => '4.8.8-1-ARCH',
+          :concat_basedir         => '/dne',
+          :id                     => 'root',
+          :kernel                 => 'Linux',
+          :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+          :is_pe                  => false,
+        }
+      end
       let :facts do default_facts end
       it { should contain_class("apache") }
       it { should contain_class("apache::mod::fastcgi") }
       it { should contain_file("fastcgi-pool-#{title}.conf").with(
         :ensure => 'present',
-        :path   => "/etc/apache2/conf.d/fastcgi-pool-#{title}.conf"
+        :path   => "/etc/httpd/conf/extra/fastcgi-pool-#{title}.conf"
       ) }
     end
   end
