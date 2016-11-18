@@ -123,4 +123,44 @@ describe 'apache::mod::rpaf', :type => :class do
       it { is_expected.to contain_file('rpaf.conf').with_content(/^RPAFheader X-Real-IP$/) }
     end
   end
+  context "on a Archlinux osfamily" do
+    let :facts do
+      {
+        :osfamily               => 'Archlinux',
+        :operatingsystem        => 'Archlinux',
+        :operatingsystemrelease => '4.8.8-1-ARCH',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+        :is_pe                  => false,
+      }
+    end
+    it { is_expected.to contain_class("apache::params") }
+    it { is_expected.to contain_apache__mod('rpaf') }
+    it { is_expected.to contain_package("mod_rpaf") }
+    it { is_expected.to contain_file('rpaf.conf').with({
+      'path' => '/etc/httpd/conf/extra/rpaf.conf',
+    }) }
+    it { is_expected.to contain_file('rpaf.conf').with_content(/^RPAFenable On$/) }
+
+    describe "with sethostname => true" do
+      let :params do
+        { :sethostname => 'true' }
+      end
+      it { is_expected.to contain_file('rpaf.conf').with_content(/^RPAFsethostname On$/) }
+    end
+    describe "with proxy_ips => [ 10.42.17.8, 10.42.18.99 ]" do
+      let :params do
+        { :proxy_ips => [ '10.42.17.8', '10.42.18.99' ] }
+      end
+      it { is_expected.to contain_file('rpaf.conf').with_content(/^RPAFproxy_ips 10.42.17.8 10.42.18.99$/) }
+    end
+    describe "with header => X-Real-IP" do
+      let :params do
+        { :header => 'X-Real-IP' }
+      end
+      it { is_expected.to contain_file('rpaf.conf').with_content(/^RPAFheader X-Real-IP$/) }
+    end
+  end
 end
