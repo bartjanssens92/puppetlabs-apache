@@ -143,4 +143,40 @@ describe 'apache::mod::reqtimeout', :type => :class do
       it { is_expected.to contain_file('reqtimeout.conf').with_content(/^RequestReadTimeout header=20-60,minrate=600$/) }
     end
   end
+  context "on a Archlinux osfamily" do
+    let :facts do
+      {
+        :osfamily               => 'Archlinux',
+        :operatingsystem        => 'Archlinux',
+        :operatingsystemrelease => '4.8.8-1-ARCH',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+        :is_pe                  => false,
+      }
+    end
+
+    context "passing no parameters" do
+      it { is_expected.to contain_class("apache::params") }
+      it { is_expected.to contain_apache__mod('reqtimeout') }
+      it { is_expected.to contain_file('reqtimeout.conf').with_content(/^RequestReadTimeout header=20-40,minrate=500\nRequestReadTimeout body=10,minrate=500$/) }
+    end
+    context "passing timeouts => ['header=20-60,minrate=600', 'body=60,minrate=600']" do
+      let :params do
+        {:timeouts => ['header=20-60,minrate=600', 'body=60,minrate=600']}
+      end
+      it { is_expected.to contain_class("apache::params") }
+      it { is_expected.to contain_apache__mod('reqtimeout') }
+      it { is_expected.to contain_file('reqtimeout.conf').with_content(/^RequestReadTimeout header=20-60,minrate=600\nRequestReadTimeout body=60,minrate=600$/) }
+    end
+    context "passing timeouts => 'header=20-60,minrate=600'" do
+      let :params do
+        {:timeouts => 'header=20-60,minrate=600'}
+      end
+      it { is_expected.to contain_class("apache::params") }
+      it { is_expected.to contain_apache__mod('reqtimeout') }
+      it { is_expected.to contain_file('reqtimeout.conf').with_content(/^RequestReadTimeout header=20-60,minrate=600$/) }
+    end
+  end
 end
