@@ -597,6 +597,7 @@ class apache::params inherits ::apache::version {
             'fcgid'   => 'mod_fcgid',
             'xml2enc' => 'libxml2', # is an optional dependency in arch
             'php7'    => 'php-apache',
+            'rpaf'    => 'mod_rpaf', # yaourt provides this package
     }
     $mod_libs         = {
     }
