@@ -591,11 +591,12 @@ class apache::params inherits ::apache::version {
     $suphp_addhandler = 'x-httpd-php'
     $suphp_engine     = 'off'
     $suphp_configpath = '/etc/php'
-    $php_version      = 'latest'
+    $php_version      = '7'
     $mod_packages     = {
             'fastcgi' => 'mod_fastcgi',
             'fcgid'   => 'mod_fcgid',
             'xml2enc' => 'libxml2', # is an optional dependency in arch
+            'php7'    => 'php-apache',
     }
     $mod_libs         = {
     }
