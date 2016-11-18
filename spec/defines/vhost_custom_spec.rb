@@ -96,7 +96,7 @@ describe 'apache::vhost::custom', :type => :define do
       ) }
     end
     context "on a Archlinux osfamily" do
-      let :facts do
+      let :default_facts do
         {
           :osfamily               => 'Archlinux',
           :operatingsystem        => 'Archlinux',
