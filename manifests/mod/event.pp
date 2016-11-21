@@ -55,7 +55,7 @@ class apache::mod::event (
         }
       }
     }
-    'debian','freebsd' : {
+    'debian','freebsd','Archlinux' : {
       apache::mpm{ 'event':
         apache_version => $apache_version,
       }
