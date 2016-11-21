@@ -595,6 +595,7 @@ class apache::params inherits ::apache::version {
             'php7'    => 'php-apache',
             'rpaf'    => 'mod_rpaf', # AUR
             'perl'    => 'mod_perl', # AUR
+            'fcgid'   => 'mod_fcgid',
     }
     $mod_libs         = {
     }
