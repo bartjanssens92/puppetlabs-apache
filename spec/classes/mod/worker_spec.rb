@@ -131,6 +131,23 @@ describe 'apache::mod::worker', :type => :class do
     it { is_expected.not_to contain_apache__mod('worker') }
     it { is_expected.to contain_file("/etc/apache2/modules.d/worker.conf").with_ensure('file') }
   end
+  context "on a Archlinux osfamily" do
+    let :facts do
+      {
+        :osfamily               => 'Archlinux',
+        :operatingsystem        => 'Archlinux',
+        :operatingsystemrelease => '4.8.8-1-ARCH',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+        :is_pe                  => false,
+      }
+    end
+    it { is_expected.to contain_class("apache::params") }
+    it { is_expected.not_to contain_apache__mod('worker') }
+    it { is_expected.to contain_file("/etc/httpd/conf/extra/worker.conf").with_ensure('file') }
+  end
 
   # Template config doesn't vary by distro
   context "on all distros" do

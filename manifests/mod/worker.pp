@@ -118,8 +118,8 @@ class apache::mod::worker (
         }
       }
     }
-    'debian', 'freebsd': {
-      ::apache::mpm { 'worker':
+    'debian', 'freebsd', 'Archlinux': {
+      ::apache::mpm{ 'worker':
         apache_version => $apache_version,
       }
     }
