@@ -597,6 +597,7 @@ class apache::params inherits ::apache::version {
             'perl'    => 'mod_perl', # AUR
             'fcgid'   => 'mod_fcgid',
             'wsgi'    => 'mod_wsgi',
+            'dav_svn' => 'subversion',
     }
     $mod_libs         = {
     }
