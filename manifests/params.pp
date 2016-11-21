@@ -593,15 +593,16 @@ class apache::params inherits ::apache::version {
     $suphp_configpath = '/etc/php'
     $php_version      = '7'
     $mod_packages     = {
+            'dav_svn' => 'subversion',
             'fastcgi' => 'mod_fastcgi',
             'fcgid'   => 'mod_fcgid',
-            'xml2enc' => 'libxml2', # is an optional dependency in arch
-            'php7'    => 'php-apache',
-            'rpaf'    => 'mod_rpaf', # AUR
-            'perl'    => 'mod_perl', # AUR
             'fcgid'   => 'mod_fcgid',
+            'perl'    => 'mod_perl', # AUR
+            'php7'    => 'php-apache',
+            'python'  => 'mod_python', #AUR
+            'rpaf'    => 'mod_rpaf', # AUR
             'wsgi'    => 'mod_wsgi',
-            'dav_svn' => 'subversion',
+            'xml2enc' => 'libxml2', # is an optional dependency in arch
     }
     $mod_libs         = {
     }
