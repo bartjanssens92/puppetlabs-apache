@@ -596,6 +596,7 @@ class apache::params inherits ::apache::version {
             'rpaf'    => 'mod_rpaf', # AUR
             'perl'    => 'mod_perl', # AUR
             'fcgid'   => 'mod_fcgid',
+            'wsgi'    => 'mod_wsgi',
     }
     $mod_libs         = {
     }
@@ -606,7 +607,7 @@ class apache::params inherits ::apache::version {
     $fastcgi_lib_path     = undef # TODO: revisit
     $mime_support_package = undef # /etc/httpd/conf/mime.types is owned by apache 2.4.23-1
     $mime_types_config    = '/etc/httpd/conf/mime.types'
-    $wsgi_socket_prefix   = undef
+    $wsgi_socket_prefix   = '/var/run/wsgi'
     $docroot              = '/srv/http/vhosts'
     $alias_icons_path     = '/usr/share/httpd/icons'
     $error_documents_path = '/usr/share/httpd/error'
