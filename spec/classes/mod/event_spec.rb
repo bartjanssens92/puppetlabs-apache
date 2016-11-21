@@ -211,4 +211,21 @@ describe 'apache::mod::event', :type => :class do
       }
     end
   end
+  context "on a Archlinux osfamily" do
+    let :facts do
+      {
+        :osfamily               => 'Archlinux',
+        :operatingsystem        => 'Archlinux',
+        :operatingsystemrelease => '4.8.8-1-ARCH',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+        :is_pe                  => false,
+      }
+    end
+    it { is_expected.to contain_class("apache::params") }
+    it { is_expected.not_to contain_apache__mod('event') }
+    it { is_expected.to contain_file("/etc/httpd/conf/extra/event.conf").with_ensure('file') }
+  end
 end
