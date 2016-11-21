@@ -219,4 +219,27 @@ describe 'apache::mod::info', :type => :class do
       :path   => '/etc/apache2/modules.d/info.conf',
     } ) }
   end
+
+  context "on a Archlinux osfamily" do
+    let :facts do
+      {
+        :osfamily               => 'Archlinux',
+        :operatingsystem        => 'Archlinux',
+        :operatingsystemrelease => '4.8.8-1-ARCH',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+        :is_pe                  => false,
+      }
+    end
+
+    # Load the more generic tests for this context
+    general_info_specs_24()
+
+    it { is_expected.to contain_file('info.conf').with({
+      :ensure => 'file',
+      :path   => '/etc/httpd/conf/extra/info.conf',
+    } ) }
+  end
 end
