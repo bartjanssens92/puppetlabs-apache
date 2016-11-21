@@ -334,4 +334,166 @@ describe 'apache::mod::passenger', :type => :class do
     it { is_expected.to contain_apache__mod('passenger') }
     it { is_expected.to contain_package("www-apache/passenger") }
   end
+  context "on a Archlinux osfamily" do
+    let :facts do
+      {
+        :osfamily               => 'Archlinux',
+        :operatingsystem        => 'Archlinux',
+        :operatingsystemrelease => '4.8.8-1-ARCH',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+        :is_pe                  => false,
+      }
+    end
+    it { is_expected.to contain_class("apache::params") }
+    it { is_expected.to contain_apache__mod('passenger') }
+    it { is_expected.to contain_package("passenger") }
+    it { is_expected.to contain_file('zpassenger.load').with({
+      'path' => '/etc/httpd/conf/extra/zpassenger.load',
+    }) }
+    it { is_expected.to contain_file('passenger.conf').with({
+      'path' => '/etc/httpd/conf/extra/passenger.conf',
+    }) }
+    describe "with passenger_root => '/usr/lib/example'" do
+      let :params do
+        { :passenger_root => '/usr/lib/example' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerRoot "/usr/lib/example"}) }
+    end
+    describe "with passenger_ruby => /usr/lib/example/ruby" do
+      let :params do
+        { :passenger_ruby => '/usr/lib/example/ruby' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerRuby "/usr/lib/example/ruby"}) }
+    end
+    describe "with passenger_default_ruby => /usr/lib/example/ruby1.9.3" do
+      let :params do
+        { :passenger_ruby => '/usr/lib/example/ruby1.9.3' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerRuby "/usr/lib/example/ruby1.9.3"}) }
+    end
+    describe "with passenger_high_performance => on" do
+      let :params do
+        { :passenger_high_performance => 'on' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerHighPerformance on$/) }
+    end
+    describe "with passenger_pool_idle_time => 1200" do
+      let :params do
+        { :passenger_pool_idle_time => 1200 }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerPoolIdleTime 1200$/) }
+    end
+    describe "with passenger_max_request_queue_size => 100" do
+      let :params do
+        { :passenger_max_request_queue_size => 100 }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerMaxRequestQueueSize 100$/) }
+    end
+
+    describe "with passenger_max_requests => 20" do
+      let :params do
+        { :passenger_max_requests => 20 }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerMaxRequests 20$/) }
+    end
+    describe "with passenger_spawn_method => bogus" do
+      let :params do
+        { :passenger_spawn_method => 'bogus' }
+      end
+      it { is_expected.to raise_error(Puppet::Error, /not permitted for passenger_spawn_method/) }
+    end
+    describe "with passenger_spawn_method => direct" do
+      let :params do
+        { :passenger_spawn_method => 'direct' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerSpawnMethod direct$/) }
+    end
+    describe "with passenger_stat_throttle_rate => 10" do
+      let :params do
+        { :passenger_stat_throttle_rate => 10 }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerStatThrottleRate 10$/) }
+    end
+    describe "with passenger_max_pool_size => 16" do
+      let :params do
+        { :passenger_max_pool_size => 16 }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerMaxPoolSize 16$/) }
+    end
+    describe "with passenger_min_instances => 5" do
+      let :params do
+        { :passenger_min_instances => 5 }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerMinInstances 5$/) }
+    end
+    describe "with passenger_max_instances_per_app => 8" do
+      let :params do
+        { :passenger_max_instances_per_app => 8 }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerMaxInstancesPerApp 8$/) }
+    end
+    describe "with rack_autodetect => on" do
+      let :params do
+        { :rack_autodetect => 'on' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  RackAutoDetect on$/) }
+    end
+    describe "with rails_autodetect => on" do
+      let :params do
+        { :rails_autodetect => 'on' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  RailsAutoDetect on$/) }
+    end
+    describe "with passenger_use_global_queue => on" do
+      let :params do
+        { :passenger_use_global_queue => 'on' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerUseGlobalQueue on$/) }
+    end
+    describe "with passenger_app_env => 'foo'" do
+      let :params do
+        { :passenger_app_env => 'foo' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(/^  PassengerAppEnv foo$/) }
+    end
+    describe "with passenger_log_file => '/var/log/httpd/passenger.log'" do
+      let :params do
+        { :passenger_log_file => '/var/log/httpd/passenger.log' }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(%r{^  PassengerLogFile /var/log/httpd/passenger.log$}) }
+    end
+    describe "with passenger_log_level => 3" do
+      let :params do
+        { :passenger_log_level => 3 }
+      end
+      it { is_expected.to contain_file('passenger.conf').with_content(%r{^  PassengerLogLevel 3$}) }
+    end
+    describe "with mod_path => '/usr/lib/foo/mod_foo.so'" do
+      let :params do
+        { :mod_path => '/usr/lib/foo/mod_foo.so' }
+      end
+      it { is_expected.to contain_file('zpassenger.load').with_content(/^LoadModule passenger_module \/usr\/lib\/foo\/mod_foo\.so$/) }
+    end
+    describe "with mod_lib_path => '/usr/lib/foo'" do
+      let :params do
+        { :mod_lib_path => '/usr/lib/foo' }
+      end
+      it { is_expected.to contain_file('zpassenger.load').with_content(/^LoadModule passenger_module \/usr\/lib\/foo\/mod_passenger\.so$/) }
+    end
+    describe "with mod_lib => 'mod_foo.so'" do
+      let :params do
+        { :mod_lib => 'mod_foo.so' }
+      end
+      it { is_expected.to contain_file('zpassenger.load').with_content(/^LoadModule passenger_module \/etc\/httpd\/modules\/mod_foo\.so$/) }
+    end
+    describe "with mod_id => 'mod_foo'" do
+      let :params do
+        { :mod_id => 'mod_foo' }
+      end
+      it { is_expected.to contain_file('zpassenger.load').with_content(/^LoadModule mod_foo \/etc\/httpd\/modules\/mod_passenger\.so$/) }
+    end
+  end
 end
