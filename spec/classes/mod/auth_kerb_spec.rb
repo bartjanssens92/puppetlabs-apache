@@ -73,5 +73,22 @@ describe 'apache::mod::auth_kerb', :type => :class do
       it { is_expected.to contain_apache__mod("auth_kerb") }
       it { is_expected.to contain_package("www-apache/mod_auth_kerb") }
     end
+    context "on a Archlinux osfamily" do
+      let :facts do
+        {
+          :osfamily               => 'Archlinux',
+          :operatingsystem        => 'Archlinux',
+          :operatingsystemrelease => '4.8.8-1-ARCH',
+          :concat_basedir         => '/dne',
+          :id                     => 'root',
+          :kernel                 => 'Linux',
+          :path                   => '/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl',
+          :is_pe                  => false,
+        }
+      end
+      it { is_expected.to contain_class("apache::params") }
+      it { is_expected.to contain_apache__mod("auth_kerb") }
+      it { is_expected.to contain_package("mod_auth_kerb") }
+    end
   end
 end

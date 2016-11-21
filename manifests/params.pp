@@ -604,6 +604,7 @@ class apache::params inherits ::apache::version {
             'wsgi'      => 'mod_wsgi',
             'xml2enc'   => 'libxml2', # is an optional dependency in arch
             'passenger' => 'passenger',
+            'auth_kerb' => 'mod_auth_kerb', # AUR
     }
     $mod_libs         = {
     }
