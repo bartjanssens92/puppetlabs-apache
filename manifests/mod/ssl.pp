@@ -41,6 +41,9 @@ class apache::mod::ssl (
       'Suse': {
         $_ssl_mutex = 'default'
       }
+      'Archlinux': {
+        $_ssl_mutex = 'default'
+      }
       default: {
         fail("Unsupported osfamily ${::osfamily}, please explicitly pass in \$ssl_mutex")
       }
@@ -60,11 +63,12 @@ class apache::mod::ssl (
   }
 
   $session_cache = $::osfamily ? {
-    'debian'  => "\${APACHE_RUN_DIR}/ssl_scache(512000)",
-    'redhat'  => '/var/cache/mod_ssl/scache(512000)',
-    'freebsd' => '/var/run/ssl_scache(512000)',
-    'gentoo'  => '/var/run/ssl_scache(512000)',
-    'Suse'    => '/var/lib/apache2/ssl_scache(512000)'
+    'debian'    => "\${APACHE_RUN_DIR}/ssl_scache(512000)",
+    'redhat'    => '/var/cache/mod_ssl/scache(512000)',
+    'freebsd'   => '/var/run/ssl_scache(512000)',
+    'gentoo'    => '/var/run/ssl_scache(512000)',
+    'Suse'      => '/var/lib/apache2/ssl_scache(512000)',
+    'Archlinux' => '/var/run/ssl_scache(512000)',
   }
 
   if $::osfamily == 'Suse' {
