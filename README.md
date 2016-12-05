@@ -313,7 +313,7 @@ To have Puppet install Apache with the default parameters, declare the [`apache`
 class { 'apache': }
 ```
 
-The Puppet module applies a default configuration based on your operating system; Debian, Red Hat, FreeBSD, and Gentoo systems each have unique default configurations. These defaults work in testing environments but are not suggested for production, and Puppet recommends customizing the class's parameters to suit your site. Use the [Reference](#reference) section to find information about the class's parameters and their default values.
+The Puppet module applies a default configuration based on your operating system; Debian, Red Hat, FreeBSD, Archlinux and Gentoo systems each have unique default configurations. These defaults work in testing environments but are not suggested for production, and Puppet recommends customizing the class's parameters to suit your site. Use the [Reference](#reference) section to find information about the class's parameters and their default values.
 
 You can customize parameters when declaring the `apache` class. For instance, this declaration installs Apache without the apache module's [default virtual host configuration][Configuring virtual hosts], allowing you to customize all Apache virtual hosts:
 
@@ -812,6 +812,7 @@ Configures module template behavior, package names, and default Apache modules b
 
 Sets the directory where the Apache server's main configuration file is located. Default: Depends on your operating system.
 
+- **Archlinux**: `/etc/httpd`
 - **Debian**: `/etc/apache2`
 - **FreeBSD**: `/usr/local/etc/apache22`
 - **Gentoo**: `/etc/apache2`
@@ -825,6 +826,7 @@ Defines the [template][] used for the main Apache configuration file. Default: `
 
 Sets the location of the Apache server's custom configuration directory. Default: Depends on your operating system.
 
+- **Archlinux**: `/etc/httpd`
 - **Debian**: `/etc/apache2/conf.d`
 - **FreeBSD**: `/usr/local/etc/apache22`
 - **Gentoo**: `/etc/apache2/conf.d`
@@ -858,6 +860,7 @@ While this default value results in a functioning Apache server, you **must** up
 
 Sets the [SSL encryption][] certificate location. Default: Determined by your operating system.
 
+- **Archlinux**: `/etc/ssl/httpd`
 - **Debian**: `/etc/ssl/certs/ssl-cert-snakeoil.pem`
 - **FreeBSD**: `/usr/local/etc/apache22/server.crt`
 - **Gentoo**: `/etc/ssl/apache2/server.crt`
@@ -895,6 +898,7 @@ This parameter only applies to Apache 2.4 or higher and is ignored on older vers
 
 Sets the [SSL certificate key file][] location. Default: Determined by your operating system.
 
+- **Archlinux**: `/etc/ssl/httpd/server.key`
 - **Debian**: `/etc/ssl/private/ssl-cert-snakeoil.key`
 - **FreeBSD**: `/usr/local/etc/apache22/server.key`
 - **Gentoo**: `/etc/ssl/apache2/server.key`
@@ -938,7 +942,7 @@ Configures a specific dev package to use. Valid options: A string or array of st
 - **Red Hat:** 'httpd-devel'
 - **Debian 8/Ubuntu 13.10 or newer:** ['libaprutil1-dev', 'libapr1-dev', 'apache2-dev']
 - **Older Debian/Ubuntu versions:** ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
-- **FreeBSD, Gentoo:** undef
+- **FreeBSD, Gentoo, Archlinux:** undef
 - **Suse:** ['libapr-util1-devel', 'libapr1-devel']
 
 Example for using httpd 2.4 from the IUS yum repo:
@@ -955,6 +959,7 @@ class { 'apache':
 
 Sets the default [`DocumentRoot`][] location. Default: Determined by your operating system.
 
+- **Archlinux**: `/srv/http/vhosts`
 - **Debian**: `/var/www/html`
 - **FreeBSD**: `/usr/local/www/apache22/data`
 - **Gentoo**: `/var/www/localhost/htdocs`
@@ -976,6 +981,7 @@ By default, Puppet attempts to manage this group as a resource under the `apache
 
 Sets the Apache server's base configuration directory. This is useful for specially repackaged Apache server builds but might have unintended consequences when combined with the default distribution packages. Default: Determined by your operating system.
 
+- **Archlinux**: `/etc/httpd`
 - **Debian**: `/etc/apache2`
 - **FreeBSD**: `/usr/local/etc/apache22`
 - **Gentoo**: `/etc/apache2`
@@ -1001,6 +1007,7 @@ Limits the number of requests allowed per connection when the [`keepalive` param
 
 Specifies the location where [Apache module][Apache modules] files are stored. Default: Depends on the operating system.
 
+- **Archlinux**: `/ect/httpd/modules`
 - **Debian** and **Gentoo**: `/usr/lib/apache2/modules`
 - **FreeBSD**: `/usr/local/libexec/apache24`
 - **Red Hat**: `modules`
@@ -1041,6 +1048,7 @@ If your `log_formats` parameter contains one of those, it will be overwritten wi
 
 Changes the directory of Apache log files for the virtual host. Default: Determined by your operating system.
 
+- **Archlinux**: `/var/log/httpd`
 - **Debian**: `/var/log/apache2`
 - **FreeBSD**: `/var/log/apache22`
 - **Gentoo**: `/var/log/apache2`
@@ -1068,6 +1076,7 @@ This is for instances when you have a user, created from another Puppet module, 
 
 Sets where Puppet places configuration files for your [Apache modules][]. Default: Determined by your operating system.
 
+- **Archlinux**: `/etc/httpd/conf/extra`
 - **Debian**: `/etc/apache2/mods-available`
 - **FreeBSD**: `/usr/local/etc/apache22/Modules`
 - **Gentoo**: `/etc/apache2/modules.d`
@@ -1078,7 +1087,7 @@ Sets where Puppet places configuration files for your [Apache modules][]. Defaul
 Determines which [multi-processing module][] (MPM) is loaded and configured for the HTTPD process. Valid options: 'event', 'itk', 'peruser', 'prefork', 'worker', or false. Default: Determined by your operating system.
 
 - **Debian**: 'worker'
-- **FreeBSD, Gentoo, and Red Hat**: 'prefork'
+- **FreeBSD, Gentoo, Archlinux and Red Hat**: 'prefork'
 
 You must set this to false to explicitly declare the following classes with custom parameters:
 
@@ -1096,6 +1105,7 @@ Controls the `package` resource's [`ensure`][] attribute. Valid options: 'absent
 
 Allows settting a custom location for the pid file - useful if using a custom built Apache rpm. Default: Depends on operating system.
 
+- **Archlinux**: '/var/run/httpd/httpd.pid'
 - **Debian:** '\${APACHE_PID_FILE}'
 - **FreeBSD:** '/var/run/httpd.pid'
 - **Red Hat:** 'run/httpd.pid'
@@ -1140,6 +1150,7 @@ Setting to false will not set ServerName at all.
 
 Sets the Apache server's root directory via Apache's [`ServerRoot`][] directive. Default: determined by your operating system.
 
+- **Archlinux**: `/etc/httpd`
 - **Debian**: `/etc/apache2`
 - **FreeBSD**: `/usr/local`
 - **Gentoo**: `/var/www`
@@ -1169,7 +1180,7 @@ Sets the name of the Apache service. Default: determined by your operating syste
 
 - **Debian and Gentoo**: 'apache2'
 - **FreeBSD**: 'apache22'
-- **Red Hat**: 'httpd'
+- **Red Hat and Archlinux**: 'httpd'
 
 ##### `service_manage`
 
@@ -1207,6 +1218,7 @@ Sets the default access policy for the / directory in httpd.conf. A value of 'fa
 
 Changes your virtual host configuration files' location. Default: determined by your operating system.
 
+- **Archlinux**: `/etc/httpd/vhosts.d`
 - **Debian**: `/etc/apache2/sites-available`
 - **FreeBSD**: `/usr/local/etc/apache22/Vhosts`
 - **Gentoo**: `/etc/apache2/vhosts.d`
@@ -1226,6 +1238,7 @@ Changes the user Apache uses to answer requests. Apache's parent process will co
 
 Default: Puppet sets the default value via the [`apache::params`][] class, which manages the user based on your operating system:
 
+- **Archlinux**: 'http'
 - **Debian**: 'www-data'
 - **FreeBSD**: 'www'
 - **Gentoo** and **Red Hat**: 'apache'
@@ -1238,6 +1251,7 @@ The name of the Apache package to install. Default: Puppet sets the default valu
 
 The default value is determined by your operating system:
 
+- **Archlinux**: 'apache'
 - **Debian**: 'apache2'
 - **FreeBSD**: 'apache24'
 - **Gentoo**: 'www-servers/apache'
@@ -1251,6 +1265,7 @@ The name of the error log file for the main server instance
 
 The default value is determined by your operating system:
 
+- **Archlinux**: 'error.log'
 - **Debian**: 'error.log'
 - **FreeBSD**: 'httpd-error.log'
 - **Gentoo**: 'error.log'
@@ -1265,6 +1280,7 @@ Directory to use for global script alias
 
 The default value is determined by your operating system:
 
+- **Archlinux**: '/var/www/localhost/cgi-bin'
 - **Debian**: '/usr/lib/cgi-bin'
 - **FreeBSD**: '/usr/local/www/apache24/cgi-bin'
 - **Gentoo**: 'var/www/localhost/cgi-bin'
@@ -1277,6 +1293,7 @@ The name of the access log file for the main server instance
 
 The default value is determined by your operating system:
 
+- **Archlinux**: 'access.log'
 - **Debian**: 'error.log'
 - **FreeBSD**: 'httpd-access.log'
 - **Gentoo**: 'access.log'
@@ -1289,6 +1306,7 @@ Installs Apache development libraries. By default, the package name is defined b
 
 The default value is determined by your operating system:
 
+- **Archlinux**: 'undef'
 - **Debian** : 'libaprutil1-dev', 'libapr1-dev'; 'apache2-dev' on Ubuntu 13.10 and Debian 8; 'apache2-prefork-dev' on other versions
 - **FreeBSD**: 'undef'; see note below
 - **Gentoo**: 'undef'
@@ -1415,6 +1433,7 @@ Installs and manages [`mod_alias`][].
 * `icons_options`: Disables directory listings for the icons directory, via Apache [`Options`] directive. Default: 'Indexes MultiViews'.
 * `icons_path`: Sets the local path for an `/icons/` Alias. Default: depends on your operating system.
 
+- **Archlinux**: `/usr/share/httpd/icons`
 - **Debian**: `/usr/share/apache2/icons`
 - **FreeBSD**: `/usr/local/www/apache24/icons`
 - **Gentoo**: `/var/www/icons`
@@ -3987,6 +4006,15 @@ You need to set the contexts using `semanage fcontext` instead of `chcon` becaus
 ### FreeBSD
 
 In order to use this module on FreeBSD, you _must_ use apache24-2.4.12 (www/apache24) or newer.
+
+### Archlinux
+
+The following modules are only available via the AUR repository. Puppet will attempt to install the package via pacman as there is no option to set the provider to AUR. As of now a sepreate statement will be needed to install the package for the mod.
+
+- 'perl': `mod_perl`
+- 'python': `mod_python`
+- 'rpaf': `mod_rpaf`
+- 'auth_kerb': `mod_authy_kerb`
 
 ## Development
 
