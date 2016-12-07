@@ -584,6 +584,7 @@ class apache::params inherits ::apache::version {
     $default_ssl_cert = '/etc/ssl/httpd/server.crt'
     $default_ssl_key  = '/etc/ssl/httpd/server.key'
     $ssl_certs_dir    = '/etc/ssl/httpd'
+    $ssl_file         = "${mod_dir}/ssl.conf"
     $passenger_root   = '/usr'
     $passenger_ruby   = '/usr/bin/ruby'
     $passenger_conf_file = 'passenger.conf'
